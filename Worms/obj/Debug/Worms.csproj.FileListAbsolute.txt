@@ -1,0 +1,6 @@
+/home/vlaserega/RiderProjects/Worms/Worms/obj/Debug/Worms.csprojAssemblyReference.cache
+/home/vlaserega/RiderProjects/Worms/Worms/obj/Debug/Worms.csproj.CoreCompileInputs.cache
+/home/vlaserega/RiderProjects/Worms/Worms/bin/Debug/Worms.exe
+/home/vlaserega/RiderProjects/Worms/Worms/bin/Debug/Worms.pdb
+/home/vlaserega/RiderProjects/Worms/Worms/obj/Debug/Worms.exe
+/home/vlaserega/RiderProjects/Worms/Worms/obj/Debug/Worms.pdb
