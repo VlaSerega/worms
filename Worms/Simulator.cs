@@ -16,20 +16,10 @@ namespace Worms
         {
             while (_world.MoveNumber != Const.MaxMoveNumber)
             {
-                foreach (var worm in _world.Worms)
-                {
-                    var action = worm.ChooseAction(_world);
-
-                    if (ValidAction(action, worm))
-                    {
-                        worm.DoAction(action);
-                    }
-
-                    worm.ReduceHealth();
-                    Console.WriteLine(worm);
-                }
+                MakeWormsStep();
 
                 _world.Worms.RemoveAll(worm => worm.Health == 0);
+                _world.Foods.RemoveAll(food => food.Health == 0);
                 _world.IncreaseMoveNumber();
             }
         }
@@ -49,6 +39,22 @@ namespace Worms
             }
 
             return false;
+        }
+
+        private void MakeWormsStep()
+        {
+            foreach (var worm in _world.Worms)
+            {
+                var action = worm.ChooseAction(_world);
+
+                if (ValidAction(action, worm))
+                {
+                    worm.DoAction(action);
+                }
+
+                worm.ReduceHealth();
+                Console.WriteLine(worm);
+            }
         }
     }
 }

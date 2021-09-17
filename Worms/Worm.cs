@@ -89,7 +89,8 @@ namespace Worms
 
         public void ReduceHealth()
         {
-            _health--;
+            if (_health != 0)
+                _health--;
         }
 
         public int Health => _health;
