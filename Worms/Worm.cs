@@ -20,17 +20,17 @@ namespace Worms
         {
             Action action = Action.Nothing;
 
-            if (_x == world.Field.Height - 1)
+            if (_x == 10)
             {
                 action = Action.Right;
 
-                if (_y == world.Field.Width - 1)
+                if (_y == 10)
                 {
                     action = Action.Up;
                 }
             }
 
-            if (_y == world.Field.Width - 1)
+            if (_y == 10)
             {
                 action = Action.Up;
 
@@ -54,7 +54,7 @@ namespace Worms
             {
                 action = Action.Down;
 
-                if (_x == world.Field.Height - 1)
+                if (_x == 10)
                 {
                     action = Action.Right;
                 }
@@ -82,6 +82,10 @@ namespace Worms
             }
         }
 
+        public void Eat()
+        {
+            _health += Const.HealthForFood;
+        }
         public override string ToString()
         {
             return "Worm[Name = \"" + _name + "\", X = " + _x + ", Y = " + _y + ", Health = " + _health + "]";
