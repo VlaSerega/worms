@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Worms
+namespace Worms.GameModel
 {
     public class World
     {

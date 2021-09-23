@@ -1,4 +1,6 @@
-namespace Worms
+using Worms.Action;
+
+namespace Worms.GameModel
 {
     public class Worm
     {
@@ -16,76 +18,94 @@ namespace Worms
             _y = y;
         }
 
-        public Action ChooseAction(World world)
+        public Action.Action ChooseAction(World world)
         {
-            Action action = Action.Nothing;
+            
+        }
+
+        private Action.Action WalkInCircles()
+        {
+            Action.Action action = new ActionNothing();
 
             if (_x == 10)
             {
-                action = Action.Right;
+                action = new ActionMove(Direction.Right);
 
                 if (_y == 10)
                 {
-                    action = Action.Up;
+                    action = new ActionMove(Direction.Up);
                 }
             }
 
             if (_y == 10)
             {
-                action = Action.Up;
+                action = new ActionMove(Direction.Up);
 
                 if (_x == 0)
                 {
-                    action = Action.Left;
+                    action = new ActionMove(Direction.Left);
                 }
             }
 
             if (_x == 0)
             {
-                action = Action.Left;
+                action = new ActionMove(Direction.Left);
 
                 if (_y == 0)
                 {
-                    action = Action.Down;
+                    action = new ActionMove(Direction.Down);
                 }
             }
 
             if (_y == 0)
             {
-                action = Action.Down;
+                action = new ActionMove(Direction.Down);
 
                 if (_x == 10)
                 {
-                    action = Action.Right;
+                    action = new ActionMove(Direction.Right);
                 }
             }
 
             return action;
         }
 
-        public void DoAction(Action action)
+        public void Eat()
         {
-            switch (action)
+            _health += Const.HealthForFood;
+        }
+
+        public void Reproduction()
+        {
+            if (_health > Const.HealthForReproduction)
+                _health -= Const.HealthForReproduction;
+            else
             {
-                case Action.Right:
-                    _y++;
-                    break;
-                case Action.Left:
-                    _y--;
-                    break;
-                case Action.Down:
+                throw new ReproductionWormException(
+                    $"Health of worm {_name} is {_health}, that less then {Const.HealthForReproduction}"
+                );
+            }
+        }
+
+        public void Move(ActionMove action)
+        {
+            switch (action.Direction)
+            {
+                case Direction.Down:
                     _x++;
                     break;
-                case Action.Up:
+                case Direction.Left:
+                    _y--;
+                    break;
+                case Direction.Right:
+                    _y++;
+                    break;
+                case Direction.Up:
                     _x--;
                     break;
             }
         }
 
-        public void Eat()
-        {
-            _health += Const.HealthForFood;
-        }
         public override string ToString()
         {
             return "Worm[Name = \"" + _name + "\", X = " + _x + ", Y = " + _y + ", Health = " + _health + "]";

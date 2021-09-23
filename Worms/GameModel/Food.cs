@@ -1,4 +1,4 @@
-namespace Worms
+namespace Worms.GameModel
 {
     public class Food
     {
@@ -17,6 +17,11 @@ namespace Worms
         {
             if (_health != 0)
                 _health--;
+        }
+
+        public override string ToString()
+        {
+            return "Food[X = " + _x + ", Y = " + _y + ", Health = " + _health + "]";
         }
 
         public int X => _x;

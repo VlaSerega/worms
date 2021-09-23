@@ -1,4 +1,4 @@
-namespace Worms
+namespace Worms.GameModel
 {
     public static class Const
     {
@@ -6,5 +6,6 @@ namespace Worms
         public const int StartHealthFood = 10;
         public const int MaxMoveNumber = 100;
         public const int HealthForFood = 10;
+        public const int HealthForReproduction = 10;
     }
 }
