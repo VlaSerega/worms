@@ -12,7 +12,7 @@ namespace Worms.Action
             _direction = direction;
         }
 
-        public void Execute(Worm worm, List<Worm> worms)
+        public void Execute(Worm worm, List<Worm> worms, List<Food> foods)
         {
             int nextX = worm.X, nextY = worm.Y;
 
@@ -40,10 +40,18 @@ namespace Worms.Action
                         $"Worm {worm.Name} can't reproduction {_direction.ToString()}"
                     );
             }
+            
+            foreach (var food in foods)
+            {
+                if (food.X == nextX && food.Y == nextY)
+                    throw new ReproductionWormException(
+                        $"Worm {worm.Name} can't reproduction {_direction.ToString()}"
+                    );
+            }
 
             worm.Reproduction();
 
-            worms.Add(new Worm($"{worm.Name}'s son", nextX, nextY));
+            worms.Add(new Worm($"{worm.Name}'s son", nextX, nextY, Const.StartHealthNewWorm));
 
             worm.Reproduction();
         }

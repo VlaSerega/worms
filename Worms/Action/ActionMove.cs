@@ -12,7 +12,7 @@ namespace Worms.Action
             _direction = direction;
         }
 
-        public void Execute(Worm worm, List<Worm> worms)
+        public void Execute(Worm worm, List<Worm> worms, List<Food> foods)
         {
             int nextX = worm.X, nextY = worm.Y;
 

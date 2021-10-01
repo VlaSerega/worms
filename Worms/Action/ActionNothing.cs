@@ -5,7 +5,7 @@ namespace Worms.Action
 {
     public class ActionNothing : Action
     {
-        public void Execute(Worm worm, List<Worm> worms)
+        public void Execute(Worm worm, List<Worm> worms, List<Food> foods)
         {
             
         }

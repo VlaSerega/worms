@@ -9,18 +9,19 @@ namespace Worms.GameModel
         private int _x;
         private int _y;
 
-        private int _health = Const.StartHealthWorm;
+        private int _health;
 
-        public Worm(string name, int x, int y)
+        public Worm(string name, int x, int y, int health = Const.StartHealthWorm)
         {
             _name = name;
             _x = x;
             _y = y;
+            _health = health;
         }
 
         public Action.Action ChooseAction(World world)
         {
-            
+            return new ActionNothing();
         }
 
         private Action.Action WalkInCircles()

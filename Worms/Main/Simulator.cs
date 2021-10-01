@@ -30,7 +30,7 @@ namespace Worms.Main
                     StayOnFood(worm);
                 }
 
-                //Червяки ходят
+                // Червяки ходят
                 MakeWormsStep();
 
                 // Еда тухнет
@@ -65,7 +65,7 @@ namespace Worms.Main
                 // Если действие допустимо
                 try
                 {
-                    action.Execute(worm, _world.Worms);
+                    action.Execute(worm, _world.Worms, _world.Foods);
                 }
                 catch (Exception e)
                 {

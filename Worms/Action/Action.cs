@@ -5,6 +5,6 @@ namespace Worms.Action
 {
     public interface Action
     {
-        void Execute(Worm worm, List<Worm> worms);
+        void Execute(Worm worm, List<Worm> worms, List<Food> foods);
     }
 }

@@ -7,5 +7,6 @@ namespace Worms.GameModel
         public const int MaxMoveNumber = 100;
         public const int HealthForFood = 10;
         public const int HealthForReproduction = 10;
+        public const int StartHealthNewWorm = 10;
     }
 }
