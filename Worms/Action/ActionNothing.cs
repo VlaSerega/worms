@@ -3,9 +3,9 @@ using Worms.GameModel;
 
 namespace Worms.Action
 {
-    public class ActionNothing : Action
+    public class ActionNothing : IAction
     {
-        public void Execute(Worm worm, List<Worm> worms, List<Food> foods)
+        public void Execute(Worm worm, List<Worm> worms)
         {
             
         }

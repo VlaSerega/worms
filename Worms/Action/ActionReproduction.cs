@@ -3,7 +3,7 @@ using Worms.GameModel;
 
 namespace Worms.Action
 {
-    public class ActionReproduction : Action
+    public class ActionReproduction : IAction
     {
         private readonly Direction _direction;
 
@@ -12,11 +12,10 @@ namespace Worms.Action
             _direction = direction;
         }
 
-        public void Execute(Worm worm, List<Worm> worms, List<Food> foods)
+        public void Execute(Worm worm, List<Worm> worms)
         {
             int nextX = worm.X, nextY = worm.Y;
-
-            // Этот кусок кода повторяется 43534 раз, как лучше?
+            
             switch (_direction)
             {
                 case Direction.Down:
@@ -36,14 +35,6 @@ namespace Worms.Action
             foreach (var curWorm in worms)
             {
                 if (curWorm.X == nextX && curWorm.Y == nextY)
-                    throw new ReproductionWormException(
-                        $"Worm {worm.Name} can't reproduction {_direction.ToString()}"
-                    );
-            }
-            
-            foreach (var food in foods)
-            {
-                if (food.X == nextX && food.Y == nextY)
                     throw new ReproductionWormException(
                         $"Worm {worm.Name} can't reproduction {_direction.ToString()}"
                     );

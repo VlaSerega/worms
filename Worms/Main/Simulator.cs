@@ -7,6 +7,7 @@ namespace Worms.Main
     public class Simulator
     {
         private readonly World _world;
+        private readonly Random _random;
 
         /// <summary>
         /// Создает новый симулятор.
@@ -15,6 +16,7 @@ namespace Worms.Main
         {
             _world = new World();
             _world.AddWorm(new Worm("Федор", 0, 0));
+            _random = new Random(_world.Seed);
         }
 
         /// <summary>
@@ -24,11 +26,11 @@ namespace Worms.Main
         {
             while (_world.MoveNumber != Const.MaxMoveNumber)
             {
+                //Генерация еды
+                GenerateFood();
+
                 // Если еда сгенерировалась на червяке
-                foreach (var worm in _world.Worms)
-                {
-                    StayOnFood(worm);
-                }
+                StayOnFood();
 
                 // Червяки ходят
                 MakeWormsStep();
@@ -39,6 +41,9 @@ namespace Worms.Main
                     food.ReduceHealth();
                     Console.WriteLine(food);
                 }
+
+                // Если червяк встал на еду
+                StayOnFood();
 
                 // Удаляем протухшую еду и мертвых червяков
                 _world.Worms.RemoveAll(worm => worm.Health == 0);
@@ -54,9 +59,8 @@ namespace Worms.Main
         /// </summary>
         private void MakeWormsStep()
         {
-            // Хорошо ли это с точки зрения ООП, что создает нового червяка выполнение метода у Action Execute,
-            // а здоровье вычитается у червяка через метод Eat
             var copyWorms = new List<Worm>(_world.Worms);
+
             foreach (var worm in copyWorms)
             {
                 // Спрашиваем, что хочет сделать червяк.
@@ -65,7 +69,7 @@ namespace Worms.Main
                 // Если действие допустимо
                 try
                 {
-                    action.Execute(worm, _world.Worms, _world.Foods);
+                    action.Execute(worm, _world.Worms);
                 }
                 catch (Exception e)
                 {
@@ -80,28 +84,43 @@ namespace Worms.Main
         /// <summary>
         /// Проверяет, что червяк <code>worm</code> стоит на еде. Если стоит на еде, то червяк съедает еду. 
         /// </summary>
-        /// <param name="worm">Проверяемый червяк.</param>
-        private void StayOnFood(Worm worm)
+        private void StayOnFood()
         {
-            // Съеденная еда
-            Food eatenFood = null;
-
-            foreach (var food in _world.Foods)
+            foreach (var worm in _world.Worms)
             {
-                // Если червяк worm, встал на еду food
-                if (food.X == worm.X && food.Y == worm.Y)
+                // Съеденная еда
+                Food eatenFood = null;
+
+                foreach (var food in _world.Foods)
                 {
-                    // Едим
-                    worm.Eat();
-                    // Запоминаем, что съели
-                    eatenFood = food;
+                    // Если червяк worm, встал на еду food
+                    if (food.X == worm.X && food.Y == worm.Y)
+                    {
+                        // Едим
+                        worm.Eat();
+                        // Запоминаем, что съели
+                        eatenFood = food;
+                    }
+                }
+
+                if (eatenFood != null)
+                {
+                    _world.Foods.Remove(eatenFood);
                 }
             }
+        }
 
-            if (eatenFood != null)
+        private void GenerateFood()
+        {
+            int x, y;
+
+            do
             {
-                _world.Foods.Remove(eatenFood);
-            }
+                x = _random.NextNormal(Const.MU, Const.Sigma);
+                y = _random.NextNormal(Const.MU, Const.Sigma);
+            } while (_world.Foods.FindLast(food => food.X == x && food.Y == y) != null);
+
+            _world.AddFood(new Food(x, y));
         }
     }
 }

@@ -3,7 +3,7 @@ using Worms.GameModel;
 
 namespace Worms.Action
 {
-    public class ActionMove : Action
+    public class ActionMove : IAction
     {
         private readonly Direction _direction;
 
@@ -12,7 +12,7 @@ namespace Worms.Action
             _direction = direction;
         }
 
-        public void Execute(Worm worm, List<Worm> worms, List<Food> foods)
+        public void Execute(Worm worm, List<Worm> worms)
         {
             int nextX = worm.X, nextY = worm.Y;
 

@@ -1,3 +1,4 @@
+using System;
 using Worms.Action;
 
 namespace Worms.GameModel
@@ -19,14 +20,46 @@ namespace Worms.GameModel
             _health = health;
         }
 
-        public Action.Action ChooseAction(World world)
+        public Action.IAction ChooseAction(World world)
         {
-            return new ActionNothing();
+            Food chosenFood = null;
+            foreach (var food in world.Foods)
+            {
+                if (chosenFood == null || Math.Abs(food.X - _x) + Math.Abs(food.Y - _y) <
+                    Math.Abs(chosenFood.X - _x) + Math.Abs(chosenFood.Y - _y))
+                {
+                    chosenFood = food;
+                }
+            }
+
+            IAction action = new ActionNothing();
+
+            if (chosenFood != null)
+            {
+                if (chosenFood.X - _x < 0)
+                {
+                    action = new ActionMove(Direction.Up);
+                }
+                if (chosenFood.X - _x > 0)
+                {
+                    action = new ActionMove(Direction.Down);
+                }
+                if (chosenFood.Y - _y < 0)
+                {
+                    action = new ActionMove(Direction.Left);
+                }
+                if (chosenFood.Y - _y > 0)
+                {
+                    action = new ActionMove(Direction.Right);
+                }
+            }
+
+            return action;
         }
 
-        private Action.Action WalkInCircles()
+        private Action.IAction WalkInCircles()
         {
-            Action.Action action = new ActionNothing();
+            Action.IAction action = new ActionNothing();
 
             if (_x == 10)
             {

@@ -8,5 +8,7 @@ namespace Worms.GameModel
         public const int HealthForFood = 10;
         public const int HealthForReproduction = 10;
         public const int StartHealthNewWorm = 10;
+        public const int MU = 0;
+        public const int Sigma = 5;
     }
 }

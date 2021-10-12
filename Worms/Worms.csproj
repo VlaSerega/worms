@@ -38,7 +38,7 @@
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="Action\Action.cs" />
+        <Compile Include="Action\IAction.cs" />
         <Compile Include="Action\ActionMove.cs" />
         <Compile Include="Action\ActionNothing.cs" />
         <Compile Include="Action\ActionReproduction.cs" />
