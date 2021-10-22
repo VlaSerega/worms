@@ -1,6 +1,6 @@
 using System;
 
-namespace Worms.Main
+namespace Worms.Services
 {
     public static class Generator
     {

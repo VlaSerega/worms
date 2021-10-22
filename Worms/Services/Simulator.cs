@@ -1,61 +1,74 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Hosting;
 using Worms.GameModel;
 
-namespace Worms.Main
+namespace Worms.Services
 {
-    public class Simulator
+    public class Simulator : IHostedService
     {
         private readonly World _world;
-        private readonly Random _random;
+        private readonly IFoodGenerator _foodGenerator;
 
         /// <summary>
-        /// Создает новый симулятор.
+        /// Create simulator. Initial game with one Worm.
+        /// <param name="generator">Food generator for World</param>
         /// </summary>
-        public Simulator()
+        public Simulator(IFoodGenerator generator)
         {
             _world = new World();
             _world.AddWorm(new Worm("Федор", 0, 0));
-            _random = new Random(_world.Seed);
+            _foodGenerator = generator;
+        }
+
+        public Task StartAsync(CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task StopAsync(CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
-        /// Запускает симуляцию червяков.
+        /// Run simulation of World.
         /// </summary>
         public void Run()
         {
             while (_world.MoveNumber != Const.MaxMoveNumber)
             {
-                //Генерация еды
+                // Generate food
                 GenerateFood();
 
-                // Если еда сгенерировалась на червяке
+                // Check that food was generated on a worm
                 StayOnFood();
 
-                // Червяки ходят
                 MakeWormsStep();
 
-                // Еда тухнет
+                // Food spoils
                 foreach (var food in _world.Foods)
                 {
                     food.ReduceHealth();
                     Console.WriteLine(food);
                 }
 
-                // Если червяк встал на еду
+                // Check that worms stand on foods
                 StayOnFood();
 
-                // Удаляем протухшую еду и мертвых червяков
+                // Remove spoiled foods and dead worms
                 _world.Worms.RemoveAll(worm => worm.Health == 0);
                 _world.Foods.RemoveAll(food => food.Health == 0);
 
-                // Счетчик ходов увеличиваем
+                // Increase move counter
                 _world.IncreaseMoveNumber();
             }
         }
 
         /// <summary>
-        /// Совершает ход червяков.
+        /// Make worms steps.
         /// </summary>
         private void MakeWormsStep()
         {
@@ -63,10 +76,10 @@ namespace Worms.Main
 
             foreach (var worm in copyWorms)
             {
-                // Спрашиваем, что хочет сделать червяк.
+                // Ask worm about next action
                 var action = worm.ChooseAction(_world);
 
-                // Если действие допустимо
+                // If action is valid, then make it
                 try
                 {
                     action.Execute(worm, _world.Worms);
@@ -82,23 +95,21 @@ namespace Worms.Main
         }
 
         /// <summary>
-        /// Проверяет, что червяк <code>worm</code> стоит на еде. Если стоит на еде, то червяк съедает еду. 
+        /// Check that worm stand on food. If yes, then it eat. 
         /// </summary>
         private void StayOnFood()
         {
             foreach (var worm in _world.Worms)
             {
-                // Съеденная еда
                 Food eatenFood = null;
 
                 foreach (var food in _world.Foods)
                 {
-                    // Если червяк worm, встал на еду food
+                    // If the worm got up on food, then it eats 
                     if (food.X == worm.X && food.Y == worm.Y)
                     {
-                        // Едим
                         worm.Eat();
-                        // Запоминаем, что съели
+                        // Remembering the food we eat
                         eatenFood = food;
                     }
                 }
@@ -112,15 +123,14 @@ namespace Worms.Main
 
         private void GenerateFood()
         {
-            int x, y;
+            Food newFood;
 
             do
             {
-                x = _random.NextNormal(Const.MU, Const.Sigma);
-                y = _random.NextNormal(Const.MU, Const.Sigma);
-            } while (_world.Foods.FindLast(food => food.X == x && food.Y == y) != null);
+                newFood = _foodGenerator.GenerateFood();
+            } while (_world.Foods.FindLast(food => food.X == newFood.X && food.Y == newFood.Y) != null);
 
-            _world.AddFood(new Food(x, y));
+            _world.AddFood(newFood);
         }
     }
 }
