@@ -10,33 +10,41 @@ namespace Worms.Services
     public class Simulator : IHostedService
     {
         private readonly World _world;
-        private readonly IFoodGenerator _foodGenerator;
-
+        private readonly IFoodGenerator _foodFoodGenerator;
+        private readonly IFileLogger _logger;
+        private readonly IHostApplicationLifetime _lifetime;
+        
         /// <summary>
         /// Create simulator. Initial game with one Worm.
-        /// <param name="generator">Food generator for World</param>
+        /// <param name="foodGenerator">Food generator for World</param>
+        /// <param name="logger">Logger for World</param>
+        /// <param name="nameGenerator">Name generator for Worms</param>
         /// </summary>
-        public Simulator(IFoodGenerator generator)
+        public Simulator(IHostApplicationLifetime lifetime, IFoodGenerator foodGenerator, IFileLogger logger, INameGenerator nameGenerator)
         {
-            _world = new World();
-            _world.AddWorm(new Worm("Федор", 0, 0));
-            _foodGenerator = generator;
+            _world = new World(nameGenerator);
+            _world.AddWorm(new Worm(nameGenerator.NextName(), 0, 0));
+            _foodFoodGenerator = foodGenerator;
+            _logger = logger;
+            _lifetime = lifetime;
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            Task.Run(Run);
+            
+            return Task.CompletedTask;
         }
 
         public Task StopAsync(CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return Task.CompletedTask;
         }
 
         /// <summary>
         /// Run simulation of World.
         /// </summary>
-        public void Run()
+        private void Run()
         {
             while (_world.MoveNumber != Const.MaxMoveNumber)
             {
@@ -52,7 +60,6 @@ namespace Worms.Services
                 foreach (var food in _world.Foods)
                 {
                     food.ReduceHealth();
-                    Console.WriteLine(food);
                 }
 
                 // Check that worms stand on foods
@@ -65,6 +72,8 @@ namespace Worms.Services
                 // Increase move counter
                 _world.IncreaseMoveNumber();
             }
+            
+            _lifetime.StopApplication();
         }
 
         /// <summary>
@@ -82,15 +91,15 @@ namespace Worms.Services
                 // If action is valid, then make it
                 try
                 {
-                    action.Execute(worm, _world.Worms);
+                    action.Execute(worm, _world);
+                    _logger.LogInfo("{0} made action {1}", worm, action);
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e);
+                    _logger.LogInfo(e, "{0} try choose bad action {1}", worm, action);
                 }
 
                 worm.ReduceHealth();
-                Console.WriteLine(worm);
             }
         }
 
@@ -127,10 +136,11 @@ namespace Worms.Services
 
             do
             {
-                newFood = _foodGenerator.GenerateFood();
+                newFood = _foodFoodGenerator.GenerateFood();
             } while (_world.Foods.FindLast(food => food.X == newFood.X && food.Y == newFood.Y) != null);
 
             _world.AddFood(newFood);
+            _logger.LogInfo("New food was generated {0}", newFood);
         }
     }
 }

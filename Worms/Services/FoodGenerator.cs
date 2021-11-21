@@ -1,12 +1,11 @@
 using System;
 using Worms.GameModel;
-using Worms.Main;
 
 namespace Worms.Services
 {
     public class FoodGenerator : IFoodGenerator
     {
-        private Random _random;
+        private readonly Random _random;
 
         public FoodGenerator()
         {

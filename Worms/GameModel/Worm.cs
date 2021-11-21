@@ -20,7 +20,7 @@ namespace Worms.GameModel
             _health = health;
         }
 
-        public Action.IAction ChooseAction(World world)
+        public IAction ChooseAction(World world)
         {
             Food chosenFood = null;
             foreach (var food in world.Foods)
@@ -57,9 +57,9 @@ namespace Worms.GameModel
             return action;
         }
 
-        private Action.IAction WalkInCircles()
+        private IAction WalkInCircles()
         {
-            Action.IAction action = new ActionNothing();
+            IAction action = new ActionNothing();
 
             if (_x == 10)
             {

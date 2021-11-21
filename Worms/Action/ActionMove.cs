@@ -12,11 +12,11 @@ namespace Worms.Action
             _direction = direction;
         }
 
-        public void Execute(Worm worm, List<Worm> worms)
+        public void Execute(Worm worm, World world)
         {
             int nextX = worm.X, nextY = worm.Y;
-
-            // Этот кусок кода повторяется 43534 раз, как лучше?
+            var worms = world.Worms;
+            
             switch (_direction)
             {
                 case Direction.Down:

@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Worms.GameModel;
 
 namespace Worms.Action
@@ -12,9 +11,10 @@ namespace Worms.Action
             _direction = direction;
         }
 
-        public void Execute(Worm worm, List<Worm> worms)
+        public void Execute(Worm worm, World world)
         {
             int nextX = worm.X, nextY = worm.Y;
+            var worms = world.Worms;
             
             switch (_direction)
             {

@@ -221,7 +221,11 @@
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="Services\FoodGenerator.cs" />
         <Compile Include="Services\Generator.cs" />
+        <Compile Include="Services\IFileLogger.cs" />
         <Compile Include="Services\IFoodGenerator.cs" />
+        <Compile Include="Services\INameGenerator.cs" />
+        <Compile Include="Services\NameGenerator.cs" />
+        <Compile Include="Services\SimpleFileLogger.cs" />
         <Compile Include="Services\Simulator.cs" />
     </ItemGroup>
     <ItemGroup>

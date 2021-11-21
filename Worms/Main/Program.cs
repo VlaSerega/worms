@@ -22,6 +22,8 @@ namespace Worms.Main
                 {
                     services.AddHostedService<Simulator>();
                     services.AddScoped<IFoodGenerator, FoodGenerator>();
+                    services.AddScoped<IFileLogger, SimpleFileLogger>();
+                    services.AddScoped<INameGenerator, NameGenerator>();
                 });
         }
     }
