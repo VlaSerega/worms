@@ -20,7 +20,7 @@ namespace Worms.Main
                 .ConfigureServices((hostContext, services) =>
 
                 {
-                    services.AddHostedService<Simulator>();
+                    services.AddHostedService<WorldSimulatorService>();
                     services.AddScoped<IFoodGenerator, FoodGenerator>();
                     services.AddScoped<IFileLogger, SimpleFileLogger>();
                     services.AddScoped<INameGenerator, NameGenerator>();

@@ -215,7 +215,7 @@
         <Compile Include="Exception\ReproductionWormException.cs" />
         <Compile Include="GameModel\Const.cs" />
         <Compile Include="GameModel\Food.cs" />
-        <Compile Include="GameModel\World.cs" />
+        <Compile Include="GameModel\WorldState.cs" />
         <Compile Include="GameModel\Worm.cs" />
         <Compile Include="Main\Program.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
@@ -226,7 +226,8 @@
         <Compile Include="Services\INameGenerator.cs" />
         <Compile Include="Services\NameGenerator.cs" />
         <Compile Include="Services\SimpleFileLogger.cs" />
-        <Compile Include="Services\Simulator.cs" />
+        <Compile Include="Services\WorldSimulator.cs" />
+        <Compile Include="Services\WorldSimulatorService.cs" />
     </ItemGroup>
     <ItemGroup>
       <None Include="packages.config" />

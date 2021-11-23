@@ -3,7 +3,7 @@ using Worms.Services;
 
 namespace Worms.GameModel
 {
-    public class World
+    public class WorldState
     {
         private readonly List<Worm> _worms;
         private readonly List<Food> _foods;
@@ -12,7 +12,7 @@ namespace Worms.GameModel
         
         private int _moveNumber;
 
-        public World(INameGenerator nameGenerator, List<Worm> worms = null, List<Food> foods = null)
+        public WorldState(INameGenerator nameGenerator, List<Worm> worms = null, List<Food> foods = null)
         {
             _worms = worms ?? new List<Worm>();
             _foods = foods ?? new List<Food>();

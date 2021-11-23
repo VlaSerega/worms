@@ -1,50 +1,35 @@
 using System;
 using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Hosting;
 using Worms.GameModel;
 
 namespace Worms.Services
 {
-    public class Simulator : IHostedService
+    public class WorldSimulator
     {
-        private readonly World _world;
+        private WorldState _world;
         private readonly IFoodGenerator _foodFoodGenerator;
         private readonly IFileLogger _logger;
-        private readonly IHostApplicationLifetime _lifetime;
-        
+
         /// <summary>
         /// Create simulator. Initial game with one Worm.
         /// <param name="foodGenerator">Food generator for World</param>
         /// <param name="logger">Logger for World</param>
-        /// <param name="nameGenerator">Name generator for Worms</param>
         /// </summary>
-        public Simulator(IHostApplicationLifetime lifetime, IFoodGenerator foodGenerator, IFileLogger logger, INameGenerator nameGenerator)
+        public WorldSimulator(IFoodGenerator foodGenerator, IFileLogger logger)
         {
-            _world = new World(nameGenerator);
-            _world.AddWorm(new Worm(nameGenerator.NextName(), 0, 0));
             _foodFoodGenerator = foodGenerator;
             _logger = logger;
-            _lifetime = lifetime;
         }
 
-        public Task StartAsync(CancellationToken cancellationToken)
+        public void InitState(WorldState state)
         {
-            Task.Run(Run);
-            
-            return Task.CompletedTask;
-        }
-
-        public Task StopAsync(CancellationToken cancellationToken)
-        {
-            return Task.CompletedTask;
+            _world = state;
         }
 
         /// <summary>
-        /// Run simulation of World.
+        /// Execute one step of simulator.
         /// </summary>
-        private void Run()
+        public void MakeStep()
         {
             while (_world.MoveNumber != Const.MaxMoveNumber)
             {
@@ -72,8 +57,6 @@ namespace Worms.Services
                 // Increase move counter
                 _world.IncreaseMoveNumber();
             }
-            
-            _lifetime.StopApplication();
         }
 
         /// <summary>

@@ -12,7 +12,7 @@ namespace Worms.Action
             _direction = direction;
         }
 
-        public void Execute(Worm worm, World world)
+        public void Execute(Worm worm, WorldState world)
         {
             int nextX = worm.X, nextY = worm.Y;
             var worms = world.Worms;

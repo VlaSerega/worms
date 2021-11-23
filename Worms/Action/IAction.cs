@@ -5,6 +5,6 @@ namespace Worms.Action
 {
     public interface IAction
     {
-        void Execute(Worm worm, World world);
+        void Execute(Worm worm, WorldState world);
     }
 }

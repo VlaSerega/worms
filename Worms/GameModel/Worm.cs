@@ -20,7 +20,7 @@ namespace Worms.GameModel
             _health = health;
         }
 
-        public IAction ChooseAction(World world)
+        public IAction ChooseAction(WorldState world)
         {
             Food chosenFood = null;
             foreach (var food in world.Foods)
@@ -49,53 +49,6 @@ namespace Worms.GameModel
                     action = new ActionMove(Direction.Left);
                 }
                 if (chosenFood.Y - _y > 0)
-                {
-                    action = new ActionMove(Direction.Right);
-                }
-            }
-
-            return action;
-        }
-
-        private IAction WalkInCircles()
-        {
-            IAction action = new ActionNothing();
-
-            if (_x == 10)
-            {
-                action = new ActionMove(Direction.Right);
-
-                if (_y == 10)
-                {
-                    action = new ActionMove(Direction.Up);
-                }
-            }
-
-            if (_y == 10)
-            {
-                action = new ActionMove(Direction.Up);
-
-                if (_x == 0)
-                {
-                    action = new ActionMove(Direction.Left);
-                }
-            }
-
-            if (_x == 0)
-            {
-                action = new ActionMove(Direction.Left);
-
-                if (_y == 0)
-                {
-                    action = new ActionMove(Direction.Down);
-                }
-            }
-
-            if (_y == 0)
-            {
-                action = new ActionMove(Direction.Down);
-
-                if (_x == 10)
                 {
                     action = new ActionMove(Direction.Right);
                 }

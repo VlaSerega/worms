@@ -5,7 +5,7 @@ namespace Worms.Action
 {
     public class ActionNothing : IAction
     {
-        public void Execute(Worm worm, World world)
+        public void Execute(Worm worm, WorldState world)
         {
             
         }
