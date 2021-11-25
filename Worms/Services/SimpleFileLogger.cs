@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Worms.Services
 {
-    public class SimpleFileLogger : IFileLogger, IDisposable
+    public class SimpleFileLogger : ISimpleLogger, IDisposable
     {
         private readonly StreamWriter _writer;
         private bool _disposed = false;

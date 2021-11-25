@@ -15,9 +15,10 @@ namespace Worms.Services
         public WorldSimulatorService(IServiceProvider serviceProvider, IHostApplicationLifetime lifetime)
         {
             _simulator = new WorldSimulator(serviceProvider.GetService<IFoodGenerator>(),
-                serviceProvider.GetService<IFileLogger>());
+                serviceProvider.GetService<ISimpleLogger>());
 
-            WorldState state = new WorldState(serviceProvider.GetService<INameGenerator>());
+            WorldState state = new WorldState(serviceProvider.GetService<INameGenerator>(),
+                serviceProvider.GetService<IBehavior>());
 
             Worm worm = new Worm(serviceProvider.GetService<INameGenerator>().NextName(), 0, 0);
             state.AddWorm(worm);

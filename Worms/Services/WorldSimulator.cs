@@ -8,14 +8,14 @@ namespace Worms.Services
     {
         private WorldState _world;
         private readonly IFoodGenerator _foodFoodGenerator;
-        private readonly IFileLogger _logger;
+        private readonly ISimpleLogger _logger;
 
         /// <summary>
         /// Create simulator. Initial game with one Worm.
         /// <param name="foodGenerator">Food generator for World</param>
         /// <param name="logger">Logger for World</param>
         /// </summary>
-        public WorldSimulator(IFoodGenerator foodGenerator, IFileLogger logger)
+        public WorldSimulator(IFoodGenerator foodGenerator, ISimpleLogger logger)
         {
             _foodFoodGenerator = foodGenerator;
             _logger = logger;
@@ -31,32 +31,29 @@ namespace Worms.Services
         /// </summary>
         public void MakeStep()
         {
-            while (_world.MoveNumber != Const.MaxMoveNumber)
+            // Generate food
+            GenerateFood();
+
+            // Check that food was generated on a worm
+            StayOnFood();
+
+            MakeWormsStep();
+
+            // Food spoils
+            foreach (var food in _world.Foods)
             {
-                // Generate food
-                GenerateFood();
-
-                // Check that food was generated on a worm
-                StayOnFood();
-
-                MakeWormsStep();
-
-                // Food spoils
-                foreach (var food in _world.Foods)
-                {
-                    food.ReduceHealth();
-                }
-
-                // Check that worms stand on foods
-                StayOnFood();
-
-                // Remove spoiled foods and dead worms
-                _world.Worms.RemoveAll(worm => worm.Health == 0);
-                _world.Foods.RemoveAll(food => food.Health == 0);
-
-                // Increase move counter
-                _world.IncreaseMoveNumber();
+                food.ReduceHealth();
             }
+
+            // Check that worms stand on foods
+            StayOnFood();
+
+            // Remove spoiled foods and dead worms
+            _world.Worms.RemoveAll(worm => worm.Health == 0);
+            _world.Foods.RemoveAll(food => food.Health == 0);
+
+            // Increase move counter
+            _world.IncreaseMoveNumber();
         }
 
         /// <summary>
@@ -115,14 +112,10 @@ namespace Worms.Services
 
         private void GenerateFood()
         {
-            Food newFood;
-
-            do
-            {
-                newFood = _foodFoodGenerator.GenerateFood();
-            } while (_world.Foods.FindLast(food => food.X == newFood.X && food.Y == newFood.Y) != null);
+            Food newFood = _foodFoodGenerator.GenerateFood(_world.Foods);
 
             _world.AddFood(newFood);
+
             _logger.LogInfo("New food was generated {0}", newFood);
         }
     }

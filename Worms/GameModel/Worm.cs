@@ -22,39 +22,7 @@ namespace Worms.GameModel
 
         public IAction ChooseAction(WorldState world)
         {
-            Food chosenFood = null;
-            foreach (var food in world.Foods)
-            {
-                if (chosenFood == null || Math.Abs(food.X - _x) + Math.Abs(food.Y - _y) <
-                    Math.Abs(chosenFood.X - _x) + Math.Abs(chosenFood.Y - _y))
-                {
-                    chosenFood = food;
-                }
-            }
-
-            IAction action = new ActionNothing();
-
-            if (chosenFood != null)
-            {
-                if (chosenFood.X - _x < 0)
-                {
-                    action = new ActionMove(Direction.Up);
-                }
-                if (chosenFood.X - _x > 0)
-                {
-                    action = new ActionMove(Direction.Down);
-                }
-                if (chosenFood.Y - _y < 0)
-                {
-                    action = new ActionMove(Direction.Left);
-                }
-                if (chosenFood.Y - _y > 0)
-                {
-                    action = new ActionMove(Direction.Right);
-                }
-            }
-
-            return action;
+            return world.Behavior.GetAction(this, world);
         }
 
         public void Eat()

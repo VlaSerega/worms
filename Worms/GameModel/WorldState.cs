@@ -9,16 +9,19 @@ namespace Worms.GameModel
         private readonly List<Food> _foods;
 
         private readonly INameGenerator _nameGenerator;
-        
+        private readonly IBehavior _behavior;
+
         private int _moveNumber;
 
-        public WorldState(INameGenerator nameGenerator, List<Worm> worms = null, List<Food> foods = null)
+        public WorldState(INameGenerator nameGenerator, IBehavior behavior, List<Worm> worms = null,
+            List<Food> foods = null)
         {
             _worms = worms ?? new List<Worm>();
             _foods = foods ?? new List<Food>();
 
             _nameGenerator = nameGenerator;
-            
+            _behavior = behavior;
+
             _moveNumber = 0;
         }
 
@@ -42,5 +45,9 @@ namespace Worms.GameModel
         public List<Food> Foods => _foods;
 
         public int MoveNumber => _moveNumber;
+
+        public INameGenerator NameGenerator => _nameGenerator;
+        
+        public IBehavior Behavior => _behavior;
     }
 }

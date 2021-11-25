@@ -15,7 +15,7 @@ namespace Worms.Action
         {
             int nextX = worm.X, nextY = worm.Y;
             var worms = world.Worms;
-            
+
             switch (_direction)
             {
                 case Direction.Down:
@@ -40,9 +40,7 @@ namespace Worms.Action
                     );
             }
 
-            worm.Reproduction();
-
-            worms.Add(new Worm($"{worm.Name}'s son", nextX, nextY, Const.StartHealthNewWorm));
+            worms.Add(new Worm(world.NameGenerator.NextName(), nextX, nextY, Const.StartHealthNewWorm));
 
             worm.Reproduction();
         }

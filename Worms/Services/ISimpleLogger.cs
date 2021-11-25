@@ -2,7 +2,7 @@ using System;
 
 namespace Worms.Services
 {
-    public interface IFileLogger
+    public interface ISimpleLogger
     {
         void LogInfo(string logMessage, params object[] args);
 

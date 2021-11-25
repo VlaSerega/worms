@@ -1,4 +1,4 @@
 packeges/
-Worms/obj/
-Worms/bin/
-
+**/bin/
+**/obj/
+packages/**
